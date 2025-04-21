@@ -6,6 +6,8 @@ movies_csv = 'data/movies_clean.csv'
 db = 'db/movies.db'
 
 def create_database(movie_path, db_path):
+    print("Database creation started...")
+
     df = pd.read_csv(movie_path)
 
     os.makedirs('data', exist_ok=True)
@@ -18,6 +20,7 @@ def create_database(movie_path, db_path):
     cursor.execute('DROP TABLE IF EXISTS movies')
 
     # Table movies creation
+    print("Creating the tables...")
     cursor.execute("""
         CREATE TABLE movies (
             id INTEGER PRIMARY KEY,
@@ -54,6 +57,7 @@ def create_database(movie_path, db_path):
     """)
 
     # Inserting movies in the movies table
+    print("Populating the database...")
     df_movies = df.drop(columns=['genres'])
     df_movies.to_sql('movies', conn, if_exists='append', index=False)
 
