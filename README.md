@@ -115,5 +115,3 @@ Three tables were created:
 Caio M. Antunes
 
 ---
-
-For any questions, please contact: [your-email@example.com]
