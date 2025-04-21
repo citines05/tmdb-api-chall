@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 movies_csv = 'data/movies_clean.csv'
-db = 'data/movies.db'
+db = 'db/movies.db'
 
 def create_database(movie_path, db_path):
     df = pd.read_csv(movie_path)
