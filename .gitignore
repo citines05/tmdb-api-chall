@@ -1,2 +1,5 @@
 data/TMDB_movie_dataset_v11.csv
 data/archive.zip
+data/*.csv
+api/__pycache__
+db/movies.db

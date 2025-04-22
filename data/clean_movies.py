@@ -1,35 +1,29 @@
 import pandas as pd
-import os
+from pathlib import Path
 
-# Paths
-data_in = 'data/TMDB_movie_dataset_v11.csv'
-data_out = 'data/movies_clean.csv'
+base_dir = Path(__file__).resolve().parent.parent 
+input_path = base_dir / "data" / "TMDB_movie_dataset_v11.csv" # change the dataset name if necessary
+output_path = base_dir / "data" / "movies_clean.csv"
 
-# Relevant columns
-columns_to_keep = ["id", "title", "release_date", "vote_average", "vote_count", "status",
+# Columns to keep that are usefull
+COLUMNS_TO_KEEP = [
+    "id", "title", "release_date", "vote_average", "vote_count", "status",
     "runtime", "adult", "budget", "revenue", "original_language", "popularity", "genres"
 ]
 
-# Function to clear the dataset
-def clean_dataset(data_in, data_out, col_to_keep):
-    df = pd.read_csv(data_in)
-
-    df_clean = df[col_to_keep].copy()
-
-    # Removes movies without title or genre and possible duplicates
+def clean_dataset_from_df(df: pd.DataFrame, columns_to_keep: list = COLUMNS_TO_KEEP) -> pd.DataFrame:
+    df_clean = df[columns_to_keep].copy()
     df_clean = df_clean.dropna(subset=['title', 'genres'])
     df_clean = df_clean.drop_duplicates(subset=['id'], keep="first")
-
-    # Convert date from string to datetime
     df_clean['release_date'] = pd.to_datetime(df_clean['release_date'], errors='coerce')
-    # Filters the release_date to drop nulls
     df_clean = df_clean[df_clean['release_date'].notnull()]
-    
-    df_clean.to_csv(data_out, index=False)
+    return df_clean
 
-    print(f'Dataset saved at: {data_out}')
+def clean_dataset_from_file(input_path: Path, columns_to_keep: list = COLUMNS_TO_KEEP) -> pd.DataFrame:
+    df = pd.read_csv(input_path)
+    return clean_dataset_from_df(df, columns_to_keep)
 
-    return
-
-if __name__ == '__main__':
-    clean_dataset(data_in, data_out, columns_to_keep)
+if __name__ == "__main__":
+    df_clean = clean_dataset_from_file(input_path)
+    df_clean.to_csv(output_path, index=False)
+    print(f"Clean dataset saved at: {output_path}")

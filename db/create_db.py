@@ -1,26 +1,22 @@
 import pandas as pd
 import sqlite3
-import os
+from pathlib import Path
 
-movies_csv = 'data/movies_clean.csv'
-db = 'db/movies.db'
+base_dir = Path(__file__).resolve().parent.parent
+input_csv = base_dir / "data" / "movies_clean.csv"
+output_db = base_dir / "db" / "movies.db"
 
-def create_database(movie_path, db_path):
-    print("Database creation started...")
-
-    df = pd.read_csv(movie_path)
-
-    os.makedirs('data', exist_ok=True)
+def create_database_from_df(df: pd.DataFrame, db_path: Path):
+    db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    # Cleans the database
-    cursor.execute('DROP TABLE IF EXISTS movie_genres')
-    cursor.execute('DROP TABLE IF EXISTS genres')
-    cursor.execute('DROP TABLE IF EXISTS movies')
+    # Limpa o banco
+    cursor.execute("DROP TABLE IF EXISTS movie_genres")
+    cursor.execute("DROP TABLE IF EXISTS genres")
+    cursor.execute("DROP TABLE IF EXISTS movies")
 
-    # Table movies creation
-    print("Creating the tables...")
+    # Criação das tabelas
     cursor.execute("""
         CREATE TABLE movies (
             id INTEGER PRIMARY KEY,
@@ -37,16 +33,12 @@ def create_database(movie_path, db_path):
             popularity REAL
         );
     """)
-
-    # Table genres creation
     cursor.execute("""
         CREATE TABLE genres (
             genre_id INTEGER PRIMARY KEY,
             name TEXT UNIQUE
         );
     """)
-    
-    # Table movie_genres creation (N:N)
     cursor.execute("""
         CREATE TABLE movie_genres (
             movie_id INTEGER,
@@ -56,39 +48,35 @@ def create_database(movie_path, db_path):
         );
     """)
 
-    # Inserting movies in the movies table
-    print("Populating the database...")
-    df_movies = df.drop(columns=['genres'])
-    df_movies.to_sql('movies', conn, if_exists='append', index=False)
+    # movies table
+    df_movies = df.drop(columns=["genres"])
+    df_movies.to_sql("movies", conn, if_exists="append", index=False)
 
-    # Inserting unique genres in the genre table
+    # movies_genre association
     genre_id_map = {}
     genre_id_count = 1
     movie_genres_data = []
 
-    for _,row in df.iterrows():
-        movie_id = row['id']
-        genres_str = row['genres'].strip('"')
+    for _, row in df.iterrows():
+        movie_id = row["id"]
+        genres_str = row["genres"].strip('"')
         genres = [g.strip() for g in genres_str.split(",") if g.strip()]
 
         for genre in genres:
             if genre not in genre_id_map:
-                # Insert into genres table
                 cursor.execute("INSERT INTO genres (genre_id, name) VALUES (?, ?);", (genre_id_count, genre))
                 genre_id_map[genre] = genre_id_count
                 genre_id_count += 1
-            
+
             genre_id = genre_id_map[genre]
             movie_genres_data.append((movie_id, genre_id))
-    
-    # Inserting movie-genre in movie_genres
+
     cursor.executemany("INSERT INTO movie_genres (movie_id, genre_id) VALUES (?, ?)", movie_genres_data)
 
     conn.commit()
     conn.close()
-
-    print(f'Database successfully created in {db_path}')
-    return
+    print(f"Database created at: {db_path}")
 
 if __name__ == "__main__":
-    create_database(movie_path=movies_csv, db_path=db)
+    df = pd.read_csv(input_csv)
+    create_database_from_df(df, output_db)

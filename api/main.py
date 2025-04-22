@@ -2,14 +2,12 @@ from fastapi import FastAPI, HTTPException, Query
 import sqlite3
 from typing import List
 from pydantic import BaseModel
+from pathlib import Path
 
 app = FastAPI()
 
-db = "db/movies.db"
-
-# 
-
-# Model response for a movie structure
+base_dir = Path(__file__).resolve().parent.parent
+db_path = base_dir / "db" / "movies.db"
 
 class Movie(BaseModel):
     id: int
@@ -26,13 +24,13 @@ class Movie(BaseModel):
     popularity: float
 
 def get_db_connection():
-    conn = sqlite3.connect(db)
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
 @app.get("/")
 def root():
-    return {"message": "this api is running"}
+    return {"message": "This API is running"}
 
 @app.get("/movies", response_model=List[Movie])
 def get_movies(genre: str = Query(None, description="Filter by genre name")):
@@ -44,11 +42,10 @@ def get_movies(genre: str = Query(None, description="Filter by genre name")):
             JOIN movie_genres mg ON m.id = mg.movie_id
             JOIN genres g ON mg.genre_id = g.genre_id
             WHERE g.name = ?
-            LIMIT 100;           
+            LIMIT 100;
         """, (genre,))
     else:
         cursor.execute("SELECT * FROM movies LIMIT 100")
-
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]
@@ -61,7 +58,7 @@ def get_movie_by_id(movie_id: int):
     row = cursor.fetchone()
     conn.close()
     if row is None:
-        raise HTTPException(status_code=404, detail="Movie not found, try another ID")
+        raise HTTPException(status_code=404, detail="Movie not found")
     return dict(row)
 
 @app.get("/genres")
