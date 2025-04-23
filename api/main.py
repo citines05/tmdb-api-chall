@@ -9,6 +9,7 @@ app = FastAPI()
 base_dir = Path(__file__).resolve().parent.parent
 db_path = base_dir / "db" / "movies.db"
 
+# Pydantic model used to define the response schema for a movie
 class Movie(BaseModel):
     id: int
     title: str
@@ -33,7 +34,7 @@ def get_db_connection():
 def root():
     return {"message": "This API is running"}
 
-# Get the top 100 movies, ordered by id 
+# Retrieve the top 100 movies ordered by ID, optionally filtered by genre
 @app.get("/movies", response_model=List[Movie])
 def get_movies(genre: str = Query(None, description="Filter by genre name")):
     conn = get_db_connection()
@@ -53,7 +54,7 @@ def get_movies(genre: str = Query(None, description="Filter by genre name")):
     conn.close()
     return [dict(row) for row in rows]
 
-# Get specific movie by id
+# Retrieve a specific movie by its ID
 @app.get("/movies/{movie_id}", response_model=Movie)
 def get_movie_by_id(movie_id: int):
     conn = get_db_connection()
@@ -65,7 +66,7 @@ def get_movie_by_id(movie_id: int):
         raise HTTPException(status_code=404, detail="Movie not found")
     return dict(row)
 
-# Get all genres ordered by id
+# Get all genres ordered by ID
 @app.get("/genres")
 def get_genres():
     conn = get_db_connection()
