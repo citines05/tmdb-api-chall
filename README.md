@@ -11,9 +11,9 @@ tmdb-api-chall/
 ├── api/                  # FastAPI application (API only reads the database)
 │   └── main.py
 ├── data/                 # Dataset cleaning and preprocessing
-│   └── clean_movies.py  # Cleaned dataset (ignored in .git)
+│   └── clean_movies.py   # Cleaned dataset (ignored in .git)
 ├── db/                   # Database schema generation and population
-│   └── create_db.py         # Generated SQLite database (ignored in .git)
+│   └── create_db.py      # Generated SQLite database (ignored in .git)
 ├── notebooks/
 │    └── exploratory_analysis.ipynb # Explores the dataset
 ├── Dockerfile            # Docker image definition
