@@ -67,7 +67,7 @@ tmdb-api-chall/
 
 ---
 
-### Option 1: Run manually (recommended for evaluators)
+### Option 1: Run manually
 
 ```bash
 # 1. Clean the raw dataset
