@@ -11,12 +11,12 @@ def create_database_from_df(df: pd.DataFrame, db_path: Path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    # Limpa o banco
+    # Clears the database
     cursor.execute("DROP TABLE IF EXISTS movie_genres")
     cursor.execute("DROP TABLE IF EXISTS genres")
     cursor.execute("DROP TABLE IF EXISTS movies")
 
-    # Criação das tabelas
+    # Table creation
     cursor.execute("""
         CREATE TABLE movies (
             id INTEGER PRIMARY KEY,
@@ -48,11 +48,11 @@ def create_database_from_df(df: pd.DataFrame, db_path: Path):
         );
     """)
 
-    # movies table
+    # Insert into movies table
     df_movies = df.drop(columns=["genres"])
     df_movies.to_sql("movies", conn, if_exists="append", index=False)
 
-    # movies_genre association
+    # Insert into movie_genres association table
     genre_id_map = {}
     genre_id_count = 1
     movie_genres_data = []

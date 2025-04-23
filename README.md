@@ -35,7 +35,17 @@ tmdb-api-chall/
 - Saved the cleaned dataset to `movies_clean.csv`
 - Created a normalized SQLite database using the cleaned dataset
 
-### 2. API Creation
+### 2. Database Schema
+
+Three relational tables were created:
+
+- `movies`: Stores metadata about movies
+- `genres`: Stores unique genre names
+- `movie_genres`: Many-to-many link table between movies and genres
+
+---
+
+### 3. API Creation
 
 - Developed a RESTful API with FastAPI to expose the data
 - Implemented the following endpoints:
@@ -63,6 +73,7 @@ tmdb-api-chall/
 ### Requirements
 
 - Python 3.10+ (for manual run)
+- Pandas, FastAPI, Uvicorn (listed in `requirements.txt`)
 - Or Docker and Docker Compose (for containerized execution)
 
 ---
@@ -112,28 +123,6 @@ docker-compose up --build
 
 ---
 
-## Endpoints Overview
-
-| Method | Endpoint              | Description                    |
-|--------|------------------------|--------------------------------|
-| GET    | `/`                   | Health check                   |
-| GET    | `/movies`             | List movies (max 100)          |
-| GET    | `/movies/{id}`        | Get movie by ID                |
-| GET    | `/movies?genre=Drama` | Filter movies by genre         |
-| GET    | `/genres`             | List all genres                |
-
----
-
-## Database Schema
-
-Three relational tables were created:
-
-- `movies`: Stores metadata about movies
-- `genres`: Stores unique genre names
-- `movie_genres`: Many-to-many link table between movies and genres
-
----
-
 ## Design Decisions
 
 - **SQLite**: Chosen for its simplicity and zero-dependency setup — ideal for small projects
@@ -145,18 +134,10 @@ Three relational tables were created:
 
 ---
 
-## Limitations
-
-- SQLite is not suitable for concurrent production workloads
-- Pagination and advanced querying (e.g., sorting, full-text search) are not yet implemented
-
----
-
 ## Notes
 
 - The `.db` file is not committed to GitHub to keep the repository light and cross-platform
 - Scripts for cleaning and database generation are provided and documented for manual testing
-- Git LFS is recommended for large dataset handling in future projects
 
 ---
 
