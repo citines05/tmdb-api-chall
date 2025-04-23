@@ -17,7 +17,7 @@ COLUMNS_TO_KEEP = [
 def extract_zip_if_needed(data_dir: Path) -> None:
     zip_files = list(data_dir.glob("*.zip"))
     if not zip_files:
-        return
+        raise FileNotFoundError("No ZIP file found in the 'data/' directory.")
 
     zip_path = zip_files[0]
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
