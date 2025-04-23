@@ -1,6 +1,6 @@
 # TMDB API project
 
-This repository contains a small project that involves preparing a movie dataset and creating a REST API to consume the processed data.
+This repository contains a small backend project that involves preparing a movie dataset and creating a REST API to consume the processed data.
 
 ---
 
@@ -73,7 +73,13 @@ Three relational tables were created:
 ### Requirements
 
 - Python 3.10+ (for manual run)
-- Pandas, FastAPI, Uvicorn (listed in `requirements.txt`)
+- Pandas, FastAPI, Uvicorn (listed in `requirements.txt`).
+  Note: if you don’t have the required packages installed, run the following command:
+
+  ```bash
+  pip install --no-cache-dir -r requirements.txt  # Use 'pip3' if needed
+  ```
+
 - Or Docker and Docker Compose (for containerized execution)
 
 ---
