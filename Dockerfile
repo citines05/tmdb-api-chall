@@ -1,5 +1,5 @@
 # Python official image
-FROM python:3.10-slim
+FROM 3.11-slim
 
 WORKDIR /app
 
