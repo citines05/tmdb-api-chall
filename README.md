@@ -102,12 +102,9 @@ Three relational tables were created:
    ```
 
 2. **Download the dataset**  
-   Go to [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies), extract the CSV file, and move it into the `data/` directory of the cloned repository.
+   Go to [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) and download the ZIP file. Then, move it into the `data/` directory of the cloned repository. The `clean_movies.py` script will automatically extract the contents and process the CSV file.
 
-3. **Rename the file if needed**  
-   Inside the `data` directory, open the `clean_movies.py` file and, on **line 5**, update the filename if the CSV you downloaded has a different name.
-
-4. **You can now run the project using one of the following options:**
+3. **You can now run the project using one of the following options:**
 
 ### Option 1: Run manually
 

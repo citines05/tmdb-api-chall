@@ -28,10 +28,12 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# Test get
 @app.get("/")
 def root():
     return {"message": "This API is running"}
 
+# Get the top 100 movies, ordered by id 
 @app.get("/movies", response_model=List[Movie])
 def get_movies(genre: str = Query(None, description="Filter by genre name")):
     conn = get_db_connection()
@@ -42,6 +44,7 @@ def get_movies(genre: str = Query(None, description="Filter by genre name")):
             JOIN movie_genres mg ON m.id = mg.movie_id
             JOIN genres g ON mg.genre_id = g.genre_id
             WHERE g.name = ?
+            ORDER BY m.id
             LIMIT 100;
         """, (genre,))
     else:
@@ -50,6 +53,7 @@ def get_movies(genre: str = Query(None, description="Filter by genre name")):
     conn.close()
     return [dict(row) for row in rows]
 
+# Get specific movie by id
 @app.get("/movies/{movie_id}", response_model=Movie)
 def get_movie_by_id(movie_id: int):
     conn = get_db_connection()
@@ -61,11 +65,12 @@ def get_movie_by_id(movie_id: int):
         raise HTTPException(status_code=404, detail="Movie not found")
     return dict(row)
 
+# Get all genres ordered by id
 @app.get("/genres")
 def get_genres():
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM genres ORDER BY name;")
+    cursor.execute("SELECT * FROM genres ORDER BY genre_id;")
     rows = cursor.fetchall()
     conn.close()
     return [dict(row) for row in rows]

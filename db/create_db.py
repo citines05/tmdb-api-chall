@@ -6,7 +6,7 @@ base_dir = Path(__file__).resolve().parent.parent
 input_csv = base_dir / "data" / "movies_clean.csv"
 output_db = base_dir / "db" / "movies.db"
 
-def create_database_from_df(df: pd.DataFrame, db_path: Path):
+def create_database_from_df(df: pd.DataFrame, db_path: Path) -> None:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
