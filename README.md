@@ -145,4 +145,4 @@ docker-compose up --build
 
 ## Author
 
-**Caio M. Antunes**
+- **Caio M. Antunes**
