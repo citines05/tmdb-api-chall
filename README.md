@@ -173,4 +173,4 @@ If you don’t have Docker and Docker Compose installed, follow these steps:
 
 ## Author
 
-- **Caio M. Antunes**
+- **Caio César Macedo Antunes**
