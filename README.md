@@ -15,7 +15,7 @@ tmdb-api-chall/
 ├── db/                   # Database schema generation and population
 │   └── create_db.py      # Generated SQLite database (ignored in .git)
 ├── notebooks/
-│    └── exploratory_analysis.ipynb # Explores the dataset
+│   └── exploratory_analysis.ipynb # Prototype notebook for the dataset cleaning logic used in clean_movies.py."
 ├── Dockerfile            # Docker image definition
 ├── requirements.txt      # Python dependencies
 └── README.md             # Project documentation
