@@ -23,15 +23,25 @@ tmdb-api-chall/
 
 ---
 
+## Technologies Used
+
+- Python 3.10
+- FastAPI
+- SQLite3
+- Pandas
+- Docker
+
+---
+
 ## Goals
 
 ### 1. Dataset Preparation
 
 - Downloaded the [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
 - Cleaned and preprocessed the data by:
-  - **Dropping irrelevant or null-heavy columns**: Columns such as `homepage`, `tagline`, `poster_path`, `keywords`, and others were removed due to being either irrelevant to the project scope or having excessive missing data.
-  - **Filtering duplicates based on movie `id`**: The dataset was checked for duplicate entries based on the `id` field. Only the first occurrence was retained to ensure primary key uniqueness in the database.
-  - **Converting the `genres` column into a normalized many-to-many structure**: The `genres` column originally held comma-separated values as strings (e.g., `"Action, Comedy"`). This was split into individual genres, added to a separate `genres` table, and connected to movies using a `movie_genres` many-to-many relationship table.
+  - **Dropping irrelevant or null-heavy columns**: columns such as `homepage`, `tagline`, `poster_path`, `keywords`, and others were removed due to being either irrelevant to the project scope or having excessive missing data.
+  - **Filtering duplicates based on movie `id`**: the dataset was checked for duplicate entries based on the `id` field. Only the first occurrence was retained to ensure primary key uniqueness in the database.
+  - **Converting the `genres` column into a normalized many-to-many structure**: the `genres` column originally held comma-separated values as strings (e.g., `"Action, Comedy"`). This was split into individual genres, added to a separate `genres` table, and connected to movies using a `movie_genres` many-to-many relationship table.
 - Saved the cleaned dataset to `movies_clean.csv`
 - Created a normalized SQLite database using the cleaned dataset
 
@@ -39,9 +49,9 @@ tmdb-api-chall/
 
 Three relational tables were created:
 
-- `movies`: Stores metadata about movies
-- `genres`: Stores unique genre names
-- `movie_genres`: Many-to-many link table between movies and genres
+- `movies`: stores metadata about movies
+- `genres`: stores unique genre names
+- `movie_genres`: many-to-many link table between movies and genres
 
 ---
 
@@ -58,13 +68,13 @@ Three relational tables were created:
 
 ---
 
-## Technologies Used
+### 4. Design Decisions
 
-- Python 3.10
-- FastAPI
-- SQLite3
-- Pandas
-- Docker
+- **SQLite**: chosen as the database engine for its lightweight, serverless architecture, which requires no setup beyond including the .db file.
+- **FastAPI**: selected for its modern, high-performance capabilities for building APIs with Python.
+- **Docker**: used to ensure the entire application runs inside a reproducible and isolated container.
+- **Modular Structure**: data cleaning and DB creation are decoupled from the API logic, wich means it improves maintainability, simplifies testing, and allows each component to be reused independently.
+- **OS-Neutral**: all file and path operations use the pathlib library instead of OS-dependent strings. This ensures full compatibility across operating systems (Linux, macOS, Windows) and avoids common path errors.
 
 ---
 
@@ -125,18 +135,7 @@ Visit:
 docker-compose up --build
 ```
 
-> The container will clean the data, build the database, and launch the API automatically.
-
----
-
-## Design Decisions
-
-- **SQLite**: Chosen for its simplicity and zero-dependency setup — ideal for small projects
-- **FastAPI**: Enables fast, type-safe API creation with automatic documentation
-- **Docker**: Provides an isolated, reproducible environment for running the full pipeline
-- **Modular Structure**: Data cleaning and DB creation are decoupled from the API logic
-- **OS-Neutral**: Uses `pathlib` for filesystem operations to support both Windows and Linux
-- **Filtering**: Genre filtering is implemented via query parameters to reflect real-world use cases
+> The container will clean the data, build the database and launch the API automatically.
 
 ---
 
