@@ -66,6 +66,8 @@ Three relational tables were created:
   - `GET /genres` – List all available genres
 - Responses are serialized using Pydantic models
 
+  This API was intentionally designed as read-only for the scope of the project, since the dataset is static and not intended to be modified through the API.
+
 ---
 
 ### 4. Design Decisions
@@ -102,7 +104,7 @@ Three relational tables were created:
    ```
 
 2. **Download the dataset**  
-   Go to [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) and download the ZIP file. Then, move it into the `data/` directory of the cloned repository. The `clean_movies.py` script will automatically extract the contents and process the CSV file.
+   Go to [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) and download the ZIP file. Then, move it into the `data/` directory of the cloned repository. The `clean_movies.py` script will automatically extract the contents of the ZIP file and process the CSV without requiring manual changes.
 
 3. **You can now run the project using one of the following options:**
 
@@ -128,9 +130,35 @@ Visit:
 
 ### Option 2: Run with Docker
 
-```bash
-docker-compose up --build
+#### Docker Setup
+
+If you don’t have Docker and Docker Compose installed, follow these steps:
+
+1. Install Docker Engine
+
+   - [Download Docker Desktop](https://www.docker.com/products/docker-desktop) for Windows or macOS
+   - For Linux, follow the [official instructions](https://docs.docker.com/engine/install/ubuntu/)
+
+  > After installation, make sure Docker is running.
+  
+2. Check Docker installation
+
+  Run the following commands to verify Docker and Docker Compose:
+
+  ```bash
+  docker --version
+  docker compose version  # (use `docker-compose version` if using the legacy CLI)
 ```
+
+3. Run the project
+
+  Once Docker is installed, simply run:
+
+  ```bash
+  docker-compose up --build
+  ```
+
+> The application will start at [http://localhost:8000](http://localhost:8000)
 
 > The container will clean the data, build the database and launch the API automatically.
 
