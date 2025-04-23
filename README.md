@@ -1,6 +1,6 @@
-# TMDB API Challenge
+# TMDB API project
 
-This repository contains the solution to a technical challenge that involves preparing a movie dataset and creating a REST API to consume the processed data.
+This repository contains a small project that involves preparing a movie dataset and creating a REST API to consume the processed data.
 
 ---
 
@@ -10,12 +10,12 @@ This repository contains the solution to a technical challenge that involves pre
 tmdb-api-chall/
 ├── api/                  # FastAPI application (API only reads the database)
 │   └── main.py
-├── db/                   # Database schema generation and population
-│   ├── create_db.py
-│   └── movies.db         # Generated SQLite database (ignored in .git)
 ├── data/                 # Dataset cleaning and preprocessing
-│   ├── clean_movies.py
-│   └── movies_clean.csv  # Cleaned dataset (ignored in .git)
+│   └── clean_movies.py  # Cleaned dataset (ignored in .git)
+├── db/                   # Database schema generation and population
+│   └── create_db.py         # Generated SQLite database (ignored in .git)
+├── notebooks/
+│    └── exploratory_analysis.ipynb # Explores the dataset
 ├── Dockerfile            # Docker image definition
 ├── requirements.txt      # Python dependencies
 └── README.md             # Project documentation
@@ -29,9 +29,9 @@ tmdb-api-chall/
 
 - Downloaded the [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
 - Cleaned and preprocessed the data by:
-  - Dropping irrelevant or null-heavy columns
-  - Filtering duplicates based on movie `id`
-  - Converting the `genres` column into a normalized many-to-many structure
+  - Dropping irrelevant or null-heavy columns: 
+  - Filtering duplicates based on movie `id`:
+  - Converting the `genres` column into a normalized many-to-many structure:
 - Saved the cleaned dataset to `movies_clean.csv`
 - Created a normalized SQLite database using the cleaned dataset
 
@@ -121,7 +121,7 @@ Three relational tables were created:
 
 ## Design Decisions
 
-- **SQLite**: Chosen for its simplicity and zero-dependency setup — ideal for this challenge
+- **SQLite**: Chosen for its simplicity and zero-dependency setup — ideal for small projects
 - **FastAPI**: Enables fast, type-safe API creation with automatic documentation
 - **Docker**: Provides an isolated, reproducible environment for running the full pipeline
 - **Modular Structure**: Data cleaning and DB creation are decoupled from the API logic
