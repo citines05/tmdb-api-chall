@@ -90,8 +90,7 @@ Visit:
 ### Option 2: Run with Docker
 
 ```bash
-docker build -t tmdb-api .
-docker run -p 8000:8000 tmdb-api
+docker-compose up --build
 ```
 
 > The container will clean the data, build the database, and launch the API automatically.
