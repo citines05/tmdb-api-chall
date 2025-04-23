@@ -29,9 +29,9 @@ tmdb-api-chall/
 
 - Downloaded the [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies)
 - Cleaned and preprocessed the data by:
-  - Dropping irrelevant or null-heavy columns: 
-  - Filtering duplicates based on movie `id`:
-  - Converting the `genres` column into a normalized many-to-many structure:
+  - **Dropping irrelevant or null-heavy columns**: Columns such as `homepage`, `tagline`, `poster_path`, `keywords`, and others were removed due to being either irrelevant to the project scope or having excessive missing data.
+  - **Filtering duplicates based on movie `id`**: The dataset was checked for duplicate entries based on the `id` field. Only the first occurrence was retained to ensure primary key uniqueness in the database.
+  - **Converting the `genres` column into a normalized many-to-many structure**: The `genres` column originally held comma-separated values as strings (e.g., `"Action, Comedy"`). This was split into individual genres, added to a separate `genres` table, and connected to movies using a `movie_genres` many-to-many relationship table.
 - Saved the cleaned dataset to `movies_clean.csv`
 - Created a normalized SQLite database using the cleaned dataset
 
@@ -67,14 +67,29 @@ tmdb-api-chall/
 
 ---
 
+1. **Clone this repository**  
+
+   ```bash
+   git clone https://github.com/citines05/tmdb-api-chall.git
+   cd tmdb-api-chall
+   ```
+
+2. **Download the dataset**  
+   Go to [TMDB Movie Dataset](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies), extract the CSV file, and move it into the `data/` directory of the cloned repository.
+
+3. **Rename the file if needed**  
+   Inside the `data` directory, open the `clean_movies.py` file and, on **line 5**, update the filename if the CSV you downloaded has a different name.
+
+4. **You can now run the project using one of the following options:**
+
 ### Option 1: Run manually
 
 ```bash
 # 1. Clean the raw dataset
-python data/clean_movies.py
+python data/clean_movies.py # use 'python3' on Linux if needed
 
 # 2. Create and populate the SQLite database
-python db/create_db.py
+python db/create_db.py # use 'python3' on Linux if needed
 
 # 3. Start the API
 uvicorn api.main:app --reload
@@ -148,5 +163,3 @@ Three relational tables were created:
 ## Author
 
 **Caio M. Antunes**
-
----
